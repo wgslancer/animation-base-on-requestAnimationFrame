@@ -111,7 +111,6 @@ animate.stagger(
   {
     translateX: 100,
     opacity: 1,
-    background: 'yellow',
     width: 160,
     height: 160,
   },
