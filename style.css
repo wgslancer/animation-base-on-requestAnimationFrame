@@ -1,0 +1,16 @@
+h1,
+h2 {
+  font-family: Lato;
+}
+
+.circle {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin-bottom: 12px;
+  opacity: 0;
+}
+
+.red {
+  background: red;
+}
