@@ -43,6 +43,9 @@ const toAnimation = (ref, to, duration) => {
       if (next.includes('translate')) {
         return prev + ';' + `transform: ${next}(${value}%)`;
       }
+      if (next === 'width' || next === 'height') {
+        return prev + ';' + `${next}: ${value}px`;
+      }
 
       return prev + ';' + `${next}: ${value}`;
     }, '');
@@ -106,9 +109,11 @@ const animate = {
 animate.stagger(
   circle,
   {
-    translateX: 500,
+    translateX: 100,
     opacity: 1,
     background: 'yellow',
+    width: 160,
+    height: 160,
   },
   2000,
   1000
