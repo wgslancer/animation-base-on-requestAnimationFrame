@@ -34,18 +34,27 @@ const runAnimation = (to, duration, callback) => {
   requestAnimationFrame(run);
 };
 
-const animate = (ref, to, duration) => {
+const toAnimation = (ref, to, duration) => {
   return runAnimation(to, duration, (resultState) => {
+    const attrKeys = Object.keys(resultState);
+
+    const style = attrKeys.reduce((prev, next) => {
+      const value = resultState[next];
+      if (next.includes('translate')) {
+        return prev + ';' + `transform: ${next}(${value}%)`;
+      }
+
+      return prev + ';' + `${next}: ${value}`;
+    }, '');
+
     if (Array.isArray(ref)) {
       ref.forEach((ele) => {
-        ele.style.transform = `translateX(${resultState.translateX}%)`;
-        ele.style.opacity = resultState.opacity;
+        ele.setAttribute('style', style);
       });
       return;
     }
 
-    ref.style.transform = `translateX(${resultState.translateX}%)`;
-    ref.style.opacity = resultState.opacity;
+    ref.setAttribute('style', style);
   });
 };
 
@@ -59,7 +68,7 @@ const stagger = (refs, to, duration, staggerDelay) => {
       const elapsedTime = currentTime - startTime;
 
       if (elapsedTime >= index * staggerDelay) {
-        animate(ref, to, duration);
+        toAnimation(ref, to, duration);
         return;
       } else {
         requestAnimationFrame(applyAnimate);
@@ -70,11 +79,36 @@ const stagger = (refs, to, duration, staggerDelay) => {
   });
 };
 
-stagger(
+// stagger(
+//   circle,
+//   {
+//     translateX: 500,
+//     opacity: 1,
+//   },
+//   2000,
+//   1000
+// );
+
+// toAnimation(
+//   circle,
+//   {
+//     translateX: 500,
+//     opacity: 1,
+//   },
+//   2000
+// );
+
+const animate = {
+  stagger,
+  to: toAnimation,
+};
+
+animate.stagger(
   circle,
   {
     translateX: 500,
     opacity: 1,
+    background: 'yellow',
   },
   2000,
   1000
